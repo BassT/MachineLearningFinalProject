@@ -1,0 +1,25 @@
+Data Import
+  Single image import
+    Importing .pngs
+      currentImgString = strcat('img', num2str(sample,'%03d'), '-', ...
+            num2str(img,'%03d'), '.png');
+      img001_001 = imread(currentImgString);
+    Converting to grayscale
+      img001_001 = rgb2gray(img001_001);
+    Resize image
+      img001_001 = imresize(img001_001, 0.1);
+      //TODO find out which method is best
+    Rearranging
+      img001_001 = reshape(img001_001,1,10800);
+    Preprocessing
+      Sometimes the letters are skewed or not centered in the image and often they have a different height <-- !!!
+      //TODO Does this effect predicition? Do we need preprocessing?
+  Mutiple images import
+    Loop
+      Import
+      convert to grayscale
+      resize
+      Rearrange to matrix row
+    End Loop
+  Target vector import
+
