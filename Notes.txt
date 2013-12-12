@@ -1,3 +1,9 @@
+Foundations
+  K << N 
+    K ~ number of pixels of the character image
+    N ~ number of training samples
+    This is fullfilled if we reduce images by 98% (18x24px): K = 432, N = 3410
+
 Data Import
   Single image import
     Importing .pngs
@@ -21,5 +27,52 @@ Data Import
       resize
       Rearrange to matrix row
     End Loop
-  Target vector import
+    Normalize columns to unit l2-norm
 
+Troubleshooting
+  Can't use l1qc_logbarrier - A*A' ist NOT positive definite
+    - A*A' is positiv definite, if A is regular (http://math.stackexchange.com/questions/158219/is-a-matrix-multiplied-with-its-transpose-something-special)
+    - regular matrices
+
+sample = 1 --> 1:55
+
+l1-minimization algorithms
+  l1-magic
+    l1qc_logbarrier
+      works (if dataset is orthogonalized (A = orth(A')';)) until some point, internet  resources suggest that problem is not "sparse" enough
+    l1eq_pd
+      works (if dataset is orthogonalized), but result is bad, decreasing PDGap leads to "Matrix must be positive definite"
+    I don't understand why the Matrix becomes NOT positive definite, after a couple of iterations
+  linprog (MATLAB)
+    only finds very abundant solutions
+  Orthogonal Matching Pursuit (OMP) from SparseLab
+    With high lambda = 0.1 we find a sparse solution, but
+      a) how can this solution be projected onto our original (non-orthogonalized) dataset?
+      b) is this lambda too high?
+  Primal-Dual Basis Pursuit (BP) from SparseLab
+    Finds a very abundant solution for orthogonalized dataset
+  Lasso from SparseLab
+    With high lambda = 0.1 we find a sparse solution, but
+      a) how can this solution be projected onto our original (non-orthogonalized) dataset?
+      b) is this lambda too high?
+
+Log
+  10.12.2013
+    Danke Mr. Elder, Rang sieht gut aus.
+    Coefficients sind noch nicht so sparse wie gewünscht
+    --> Residuals berechnen und schauen ob character identifiziert werden kann
+    --> Residuals können berechnet werden, aber sieht scheiße aus
+
+  11.12.2013
+    Assumption: l1-Minimization algorithms are applied correctly, preprocessing is suitable
+    Next step: Run tests to see if parameter tuning can give us suitable sparse representations
+      a) Algorithms:
+            1. l1qc_logbarrier ~80s - 19 errors
+              Parameters: none
+            2. l1eq_pd (10x faster than l1qc_logbarrier) ~8s - 19 errors
+              Parameters: none
+            3. SolveOMP (l_0 maximization) ~0.8s - 20 errors
+              Parameters: none
+            4. SolveLasso ~10s
+              Parameters: lambdaStop (0.01 - 0.1 - 1)
+      b) 11-Fold Cross-Validation (because 55 samples)

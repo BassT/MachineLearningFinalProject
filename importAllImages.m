@@ -1,4 +1,4 @@
-dataset = zeros(3410,10800);
+dataset = zeros(3410,24*24);
 
 tic;
 for sample = 1:62
@@ -7,9 +7,16 @@ for sample = 1:62
         currentImgString = strcat('img', num2str(sample,'%03d'), '-', ...
             num2str(img,'%03d'), '.png');
         currentImg = imread(currentImgString);
-        currentImg = imresize(currentImg, 0.1);
         currentImg = rgb2gray(currentImg);
-        dataset((sample - 1) * 55 + img,:) = reshape(currentImg,1,10800);
+        [t,b,l,r] = findBorders(im2double(currentImg));
+        currentImg = currentImg(t:b,l:r);
+%         figure;image(currentImg);colormap gray
+        currentImg = imresize(currentImg, [24 24]);
+%         figure;image(currentImg);colormap gray
+        dataset((sample - 1) * 55 + img,:) = reshape(currentImg,1,24*24);
     end
     toc;
 end
+
+% let's transpose it so any column contains stacked columns of one image
+dataset = dataset';
