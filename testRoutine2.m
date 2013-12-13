@@ -37,7 +37,7 @@ for i = 1:r
 %     x = SolveOMP(train, test(:,i), size(train,2), 10*size(train,1));
     x = SolveLasso(train, test(:,i), size(train,2), 'lasso', 10*size(train,1));
     
-    res = computeResiduals(train, x, test(:,i), target);
+    res = computeResiduals(train, x, test(:,i), target, 62);
     
     class(i) = find(res == min(res),1);
     
