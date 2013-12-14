@@ -29,5 +29,8 @@ for class = removed_samples+1:62
     
 end
 
+% figure('name','recovered image');image(reshape(recovery,24,24));colormap gray;
+% figure('name','original image');image(reshape(y,24,24));colormap gray;
+
 end
 

@@ -1,5 +1,7 @@
 function [ top, bottom, left, right ] = findBorders( image )
 %findBorders Detects the outer pixels that are non-white
+%TODO make sure that no obstacles in the image, that don't belong to the
+%character get detected, because this will find wrong borders
 
 % top border
 for i = 1:size(image,1)
