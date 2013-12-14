@@ -11,7 +11,7 @@ output = zeros(1,size(test_data,2));
 for i = 1:size(test_data,2)
     
     ticid = tic;
-    fprintf('Started working on test sample %d...',i);
+    fprintf('Started working on test sample %d (''%d'')...',i,labels(test_target(i)));
     % find sparsest representation of test sample
 %     x = l1eq_pd(zeros(size(train_data,2),1), train_data, [], test_data(:,i));
     x = l1qc_logbarrier(zeros(size(train_data,2),1), train_data, [], test_data(:,i), 0.05);
@@ -21,7 +21,7 @@ for i = 1:size(test_data,2)
     
     % classify based on residuals
     output(i) = find(res == min(res),1);
-    fprintf('finished after %d\n',toc(ticid));
+    fprintf('finished after %d, identified as ''%d''\n',toc(ticid),labels(output(i)));
     
 end
 

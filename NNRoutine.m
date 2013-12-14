@@ -13,12 +13,12 @@ load('target.mat');
 inputs = datasetBW;
 targets = transformClassesToNNTargetVector(target);
 
-% error_rate = ones(10,1);
+error_rate = ones(20,1);
 
-% for i = 1:10
+for i = 1:20
     
     % Create a Pattern Recognition Network
-    hiddenLayerSize = 300;
+    hiddenLayerSize = 80;
     net = patternnet(hiddenLayerSize);
     
     
@@ -37,14 +37,14 @@ targets = transformClassesToNNTargetVector(target);
     outputs = net(inputs);
     output_target = maxOnly(outputs)';
     
-    error_rate = length(find(output_target ~= classes_of_train_data))/3410;
+%     error_rate = length(find(output_target ~= classes_of_train_data))/3410;
     
     % compute error rate
-%     error_rate(i) = length(find(output_target ~= classes_of_train_data))/3410;
+    error_rate(i) = length(find(output_target ~= classes_of_train_data))/3410;
     
     % if current net has best error rate, save net
-%     if(error_rate(i) == min(error_rate(i)))
-%         best_net = net;
-%     end
+    if(error_rate(i) == min(error_rate(i)))
+        best_net = net;
+    end
     
-% end
+end
