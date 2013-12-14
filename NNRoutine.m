@@ -7,8 +7,11 @@
 %   datasetBW - input data.
 %   target - target data.
 
+load('datasetBW.mat');
+load('target.mat');
+
 inputs = datasetBW;
-targets = target;
+targets = transformClassesToNNTargetVector(target);
 
 % Create a Pattern Recognition Network
 hiddenLayerSize = 80;
@@ -20,12 +23,23 @@ net.divideParam.trainRatio = 80/100;
 net.divideParam.valRatio = 10/100;
 net.divideParam.testRatio = 10/100;
 
+error_rate = zeros(50,1);
+
+% for i = 1:20
 
 % Train the Network
+tic;
 [net,tr] = train(net,inputs,targets);
+toc;
 
 % Test the Network
 outputs = net(inputs);
 output_target = maxOnly(outputs)';
 
-error_rate = length(find(output_target ~= classes_of_train_data))/3410
+error_rate = length(find(output_target ~= classes_of_train_data))/3410;
+% error_rate(i) = length(find(output_target ~= classes_of_train_data))/3410;
+% if(error_rate(i) == min(error_rate(i))
+%     best_net = net;
+% end
+
+% end
