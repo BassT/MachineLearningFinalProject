@@ -1,9 +1,0 @@
-function [ target ] = transformClassesToNNTargetVector( classes )
-
-target = zeros(size(classes));
-
-
-
-
-end
-
